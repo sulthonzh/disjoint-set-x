@@ -305,3 +305,98 @@ test('default strategy is size', () => {
 test('invalid strategy falls back to size', () => {
   assert.equal(new DisjointSet({ strategy: 'bogus' })._strategy, 'size');
 });
+
+// === componentSize with rank strategy (bug fix) ===
+test('componentSize works with rank strategy', () => {
+  const ds = new DisjointSet({ strategy: 'rank' });
+  ds.makeSetAll([1, 2, 3, 4, 5]);
+  ds.union(1, 2);
+  ds.union(1, 3);
+  ds.union(1, 4);
+  ds.union(1, 5);
+  assert.equal(ds.componentSize(1), 5);
+  assert.equal(ds.componentSize(3), 5);
+});
+
+test('componentSize consistent across strategies', () => {
+  const sizeDS = DisjointSet.from([1, 2, 3, 4], { strategy: 'size' });
+  const rankDS = DisjointSet.from([1, 2, 3, 4], { strategy: 'rank' });
+  sizeDS.union(1, 2); sizeDS.union(2, 3); sizeDS.union(3, 4);
+  rankDS.union(1, 2); rankDS.union(2, 3); rankDS.union(3, 4);
+  assert.equal(sizeDS.componentSize(1), rankDS.componentSize(1));
+});
+
+// === members with rank strategy ===
+test('members works with rank strategy', () => {
+  const ds = new DisjointSet({ strategy: 'rank' });
+  ds.makeSetAll(['a', 'b', 'c']);
+  ds.union('a', 'b');
+  const m = ds.members('a');
+  assert.equal(m.length, 2);
+  assert.ok(m.includes('a'));
+  assert.ok(m.includes('b'));
+});
+
+// === components with rank strategy ===
+test('components works with rank strategy', () => {
+  const ds = new DisjointSet({ strategy: 'rank' });
+  ds.makeSetAll([1, 2, 3, 4, 5]);
+  ds.union(1, 2);
+  ds.union(3, 4);
+  const comps = ds.components();
+  assert.equal(comps.length, 3);
+  const sizes = comps.map(c => c.length).sort((a, b) => a - b);
+  assert.deepEqual(sizes, [1, 2, 2]);
+});
+
+// === toJSON/fromJSON with rank strategy ===
+test('toJSON/fromJSON roundtrip with rank strategy', () => {
+  const ds = new DisjointSet({ strategy: 'rank' });
+  ds.makeSetAll([1, 2, 3, 4]);
+  ds.union(1, 2);
+  ds.union(3, 4);
+  ds.union(1, 3);
+  const restored = DisjointSet.fromJSON(ds.toJSON());
+  assert.equal(restored.size, 4);
+  assert.equal(restored.componentCount, 1);
+  assert.equal(restored.componentSize(1), 4);
+  assert.ok(restored.connected(2, 4));
+});
+
+// === numeric vs string keys ===
+test('handles numeric keys correctly', () => {
+  const ds = new DisjointSet();
+  ds.makeSetAll([0, 1, 2]);
+  ds.union(0, 1);
+  assert.ok(ds.connected(0, 1));
+  assert.ok(!ds.connected(0, 2));
+});
+
+test('handles object keys (by reference)', () => {
+  const ds = new DisjointSet();
+  const a = { id: 'a' };
+  const b = { id: 'b' };
+  ds.makeSet(a);
+  ds.makeSet(b);
+  ds.union(a, b);
+  assert.ok(ds.connected(a, b));
+  assert.equal(ds.componentSize(a), 2);
+});
+
+// === empty components ===
+test('empty DisjointSet components returns []', () => {
+  const ds = new DisjointSet();
+  assert.deepEqual(ds.components(), []);
+});
+
+// === clear allows reuse ===
+test('clear allows reuse', () => {
+  const ds = DisjointSet.from([1, 2, 3]);
+  ds.union(1, 2);
+  ds.clear();
+  assert.equal(ds.size, 0);
+  ds.makeSetAll(['x', 'y']);
+  ds.union('x', 'y');
+  assert.equal(ds.componentCount, 1);
+  assert.ok(ds.connected('x', 'y'));
+});

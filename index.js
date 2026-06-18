@@ -93,20 +93,25 @@ export class DisjointSet {
     const ry = this.find(y);
     if (rx === ry) return false;
 
+    // Always track size (for componentSize), regardless of union strategy
+    const sx = this._size.get(rx);
+    const sy = this._size.get(ry);
+
     if (this._strategy === 'rank') {
       const rankX = this._rank.get(rx);
       const rankY = this._rank.get(ry);
       if (rankX < rankY) {
         this._parent.set(rx, ry);
+        this._size.set(ry, sx + sy);
       } else if (rankX > rankY) {
         this._parent.set(ry, rx);
+        this._size.set(rx, sx + sy);
       } else {
         this._parent.set(ry, rx);
         this._rank.set(rx, rankX + 1);
+        this._size.set(rx, sx + sy);
       }
     } else {
-      const sx = this._size.get(rx);
-      const sy = this._size.get(ry);
       if (sx < sy) {
         this._parent.set(rx, ry);
         this._size.set(ry, sx + sy);

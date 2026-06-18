@@ -1,6 +1,6 @@
 {
   "name": "disjoint-set-x",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Zero-dependency Union-Find (Disjoint Set) data structure with path compression and union by size/rank. O(α(n)) amortized per operation.",
   "type": "module",
   "main": "index.js",

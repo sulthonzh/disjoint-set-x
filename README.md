@@ -2,7 +2,7 @@
 
 Zero-dependency [Union-Find (Disjoint Set)](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) with path compression and union by size/rank.
 
-O(α(n)) amortized per operation — α is the inverse Ackermann function, effectively O(1) for all practical inputs.
+O(α(n)) amortized per operation — α is the inverse Ackermann function, effectively O(1) for all practical inputs. Supports both **union by size** and **union by rank** strategies.
 
 ## Install
 
@@ -65,13 +65,74 @@ ds.components();
 - `DisjointSet.from(iterable, options?)` — Create from iterable
 - `Symbol.iterator` — Iterate over all elements
 
-## Use Cases
+## Real-World Examples
 
-- **Graph algorithms**: Kruskal's MST, connected components, cycle detection
-- **Network connectivity**: percolation, social network analysis
-- **Image processing**: connected component labeling
-- **Type systems**: unification, equivalence classes
-- **Dynamic connectivity**: online pair queries
+### 1. Detect Cycles in an Undirected Graph (Kruskal's MST)
+
+```js
+import { DisjointSet } from 'disjoint-set-x';
+
+function hasCycle(edges, nodeCount) {
+  const ds = new DisjointSet();
+  for (let i = 0; i < nodeCount; i++) ds.makeSet(i);
+
+  for (const [u, v] of edges) {
+    if (ds.connected(u, v)) return true; // cycle found
+    ds.union(u, v);
+  }
+  return false;
+}
+
+// Graph: 0--1--2--0 (triangle = cycle)
+console.log(hasCycle([[0,1],[1,2],[2,0]], 3)); // true
+// Tree: 0--1, 0--2 (no cycle)
+console.log(hasCycle([[0,1],[0,2]], 3)); // false
+```
+
+### 2. Group Connected Components in a Social Network
+
+```js
+import { DisjointSet } from 'disjoint-set-x';
+
+const friendships = [
+  ['Alice', 'Bob'], ['Bob', 'Carol'],
+  ['Dave', 'Eve'], ['Frank', 'Grace'],
+];
+
+const ds = new DisjointSet();
+for (const [a, b] of friendships) ds.union(a, b);
+
+const friendGroups = ds.components();
+// [['Alice','Bob','Carol'], ['Dave','Eve'], ['Frank','Grace']]
+
+// Check if two people are in the same friend circle
+ds.connected('Alice', 'Carol'); // true
+ds.connected('Alice', 'Dave');  // false
+```
+
+### 3. Grid Percolation Detection
+
+```js
+import { DisjointSet } from 'disjoint-set-x';
+
+// Check if a grid percolates (top connects to bottom)
+function percolates(grid, n) {
+  const TOP = n * n, BOTTOM = n * n + 1;
+  const ds = DisjointSet.from(Array.from({ length: n * n + 2 }, (_, i) => i));
+
+  for (let r = 0; r < n; r++) {
+    for (let c = 0; c < n; c++) {
+      if (!grid[r][c]) continue;
+      const idx = r * n + c;
+      if (r === 0) ds.union(idx, TOP);
+      if (r === n - 1) ds.union(idx, BOTTOM);
+      if (r > 0 && grid[r-1][c]) ds.union(idx, (r-1)*n + c);
+      if (c > 0 && grid[r][c-1]) ds.union(idx, r*n + c - 1);
+    }
+  }
+  return ds.connected(TOP, BOTTOM);
+}
+```
 
 ## Performance
 
