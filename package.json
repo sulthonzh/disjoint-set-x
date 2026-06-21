@@ -4,12 +4,24 @@
   "description": "Zero-dependency Union-Find (Disjoint Set) data structure with path compression and union by size/rank. O(α(n)) amortized per operation.",
   "type": "module",
   "main": "index.js",
-  "exports": { ".": "./index.js" },
-  "bin": { "dsx": "./cli.js" },
-  "scripts": { "test": "node --test test.js" },
+  "exports": {
+    ".": "./index.js"
+  },
+  "bin": {
+    "dsx": "./cli.js"
+  },
+  "scripts": {
+    "test": "node --test test.js"
+  },
   "keywords": [
-    "union-find", "disjoint-set", "path-compression", "union-by-rank",
-    "union-by-size", "data-structure", "algorithm", "zero-dependency"
+    "union-find",
+    "disjoint-set",
+    "path-compression",
+    "union-by-rank",
+    "union-by-size",
+    "data-structure",
+    "algorithm",
+    "zero-dependency"
   ],
   "author": "sulthonzh",
   "license": "MIT",
@@ -17,5 +29,17 @@
     "type": "git",
     "url": "https://github.com/sulthonzh/disjoint-set-x.git"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "index.js",
+    "cli.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "homepage": "https://github.com/sulthonzh/disjoint-set-x#readme",
+  "bugs": {
+    "url": "https://github.com/sulthonzh/disjoint-set-x/issues"
+  }
 }
