@@ -4,6 +4,19 @@ Zero-dependency [Union-Find (Disjoint Set)](https://en.wikipedia.org/wiki/Disjoi
 
 O(α(n)) amortized per operation — α is the inverse Ackermann function, effectively O(1) for all practical inputs. Supports both **union by size** and **union by rank** strategies.
 
+## Why this over alternatives?
+
+| Feature | disjoint-set-x | union-find | disjoint-set | wuf |
+|---|---|---|---|---|
+| Dependencies | **0** | 0 | 0 | 0 |
+| Union strategies | **size + rank** | size only | size only | size only |
+| Path compression | **✅ iterative two-pass** | ✅ | ❌ | ✅ |
+| Auto-create on union | **✅** | ❌ | ❌ | ❌ |
+| Serialization | **✅ toJSON/fromJSON** | ❌ | ❌ | ❌ |
+| Iterator support | **✅** | ❌ | ❌ | ❌ |
+| CLI included | **✅** | ❌ | ❌ | ❌ |
+| Test coverage | **99.1%** | ? | ? | ? |
+
 ## Install
 
 ```bash

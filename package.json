@@ -11,7 +11,8 @@
     "dsx": "./cli.js"
   },
   "scripts": {
-    "test": "node --test test.js"
+    "test": "node --test test.js",
+    "test:coverage": "c8 node --test test.js"
   },
   "keywords": [
     "union-find",
@@ -41,5 +42,9 @@
   "homepage": "https://github.com/sulthonzh/disjoint-set-x#readme",
   "bugs": {
     "url": "https://github.com/sulthonzh/disjoint-set-x/issues"
+  },
+  "devDependencies": {
+    "eslint": "^10.6.0",
+    "globals": "^17.7.0"
   }
 }
