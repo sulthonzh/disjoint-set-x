@@ -44,6 +44,7 @@
     "url": "https://github.com/sulthonzh/disjoint-set-x/issues"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "eslint": "^10.6.0",
     "globals": "^17.7.0"
   }
