@@ -193,6 +193,32 @@ test('union by size maintains correct sizes', () => {
   ds.union(1, 5); assert.equal(ds.componentSize(1), 5);
 });
 
+// === rank strategy: unequal rank branches ===
+test('rank strategy: union attaches smaller rank tree under larger', () => {
+  // Build trees of different ranks: tree A has rank 1, tree B has rank 0
+  const ds = new DisjointSet({ strategy: 'rank' });
+  ds.makeSetAll([1, 2, 3]);
+  ds.union(1, 2); // tree rooted at 1 now has rank 1
+  ds.union(1, 3); // 3 has rank 0, should attach under 1 (rankX > rankY branch)
+  assert.equal(ds.find(3), ds.find(1));
+  assert.equal(ds._rank.get(ds.find(1)), 1); // rank unchanged
+  assert.equal(ds.componentSize(1), 3);
+});
+
+test('rank strategy: rankX < rankY branch', () => {
+  // Ensure the rankX < rankY branch is exercised
+  const ds = new DisjointSet({ strategy: 'rank' });
+  ds.makeSetAll([1, 2, 3, 4]);
+  // Build a rank-1 tree with 3,4
+  ds.union(3, 4); // rank(3) = 1
+  // Now union 1 (rank 0) with 3 (rank 1) — rankX < rankY
+  ds.union(1, 3);
+  const root = ds.find(1);
+  assert.equal(root, ds.find(3)); // 1's tree attached under 3's root
+  assert.equal(ds._rank.get(root), 1); // rank stays 1
+  assert.equal(ds.componentSize(1), 3);
+});
+
 // === path compression ===
 test('path compression flattens tree', () => {
   const ds = DisjointSet.from([1, 2, 3, 4, 5]);

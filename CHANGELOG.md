@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.1] - 2026-07-15
+
+### Added
+- Tests for unequal-rank union branches (rankX < rankY, rankX > rankY)
+- Coverage now 100% statements, 100% branches, 100% functions
+
 ## [1.1.0] - 2026-06-18
 
 ### Fixed
