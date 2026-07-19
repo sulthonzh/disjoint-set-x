@@ -11,8 +11,8 @@
     "dsx": "./cli.js"
   },
   "scripts": {
-    "test": "node --test test.js",
-    "test:coverage": "c8 node --test test.js"
+    "test": "node --test test.js test/cli.test.js",
+    "test:coverage": "c8 --include=*.js node --test test.js test/cli.test.js"
   },
   "keywords": [
     "union-find",

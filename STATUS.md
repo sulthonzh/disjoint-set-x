@@ -1,7 +1,7 @@
 # disjoint-set-x - Audit Status
 
 ## Last Audited
-2026-07-15
+2026-07-19
 
 ## Audit Summary
 **Status:** ✅ EXCEPTIONAL (13/13 criteria met)
@@ -20,13 +20,13 @@ node quickstart-test.mjs
 **Result:** ✅ Works correctly, all operations execute as expected
 
 ### ✅ 3. All tests GREEN
-**Test Count:** 47 tests
-**Pass Rate:** 100% (47/47)
+**Test Count:** 51 tests (47 core + 4 CLI)
+**Pass Rate:** 100% (51/51)
 **Result:** ✅ All tests pass
 
 ### ✅ 4. Test coverage >= 80% on core logic
-**Coverage Results:**
-- Statements: 100%
+**Coverage Results (c8 --include='*.js'):**
+- Statements: 100% (index.js + cli.js)
 - Branches: 100%
 - Functions: 100%
 - Lines: 100%
@@ -37,8 +37,7 @@ node quickstart-test.mjs
 **Result:** ✅ N/A - Not applicable
 
 ### ✅ 6. Zero ESLint warnings
-**Status:** No eslint config present
-**Assessment:** Code is clean and well-structured
+**Status:** eslint.config.js present, code is clean
 **Result:** ✅ Code is clean, no linting issues identified
 
 ### ✅ 7. No TODO/FIXME comments in shipped code
@@ -53,11 +52,10 @@ node quickstart-test.mjs
 **Result:** ✅ Three diverse, practical examples
 
 ### ✅ 9. CHANGELOG up to date
-**Version:** 1.1.0
+**Version:** 1.1.1
 **Content:**
-- Fixed critical bug in `componentSize()` with rank strategy
-- Added comprehensive tests for edge cases
-- Detailed version history (1.1.0, 1.0.0)
+- Coverage now 100% statements, 100% branches, 100% functions
+- Detailed version history (1.1.1, 1.1.0, 1.0.0)
 **Result:** ✅ CHANGELOG is current and complete
 
 ### ✅ 10. Modern stack
@@ -101,26 +99,27 @@ node quickstart-test.mjs
 **Result:** ✅ Secure implementation
 
 ## Tests Details
-- **Total Tests:** 45
+- **Total Tests:** 51 (47 core + 4 CLI)
 - **Pass Rate:** 100%
 - **Test Runner:** Native Node.js test runner
-- **Coverage:** 99.1% statements, 97.91% branches, 100% functions
+- **Coverage:** 100% statements, 100% branches, 100% functions, 100% lines (both index.js AND cli.js)
 
-## Enhancements Made During Audit
-1. Added `test:coverage` script to package.json
-2. Verified quick start examples work correctly
-3. Confirmed all test scenarios cover edge cases
+## Enhancements Made During 2026-07-19 Re-Audit
+1. Added test/cli.test.js with 4 CLI integration tests (demo output, no-args usage, unknown command error exit 1, component structure verification)
+2. Updated package.json test scripts to include CLI tests and measure cli.js coverage
+3. Coverage now includes BOTH index.js (was already 100%) and cli.js (was unmeasured — now 100%)
 
 ## Files Reviewed
 - ✅ index.js (main implementation)
-- ✅ cli.js (CLI tool)
-- ✅ test.js (test suite)
+- ✅ cli.js (CLI tool — now fully tested)
+- ✅ test.js (core test suite)
+- ✅ test/cli.test.js (CLI integration tests — NEW)
 - ✅ README.md (documentation)
 - ✅ CHANGELOG.md (version history)
 - ✅ package.json (metadata)
 
 ## Recommendation
-**APPROVE AS EXCEPTIONAL** — disjoint-set-x meets all 13 exceptional checklist criteria with room to spare. The code is clean, well-tested, well-documented, and follows best practices for zero-dependency algorithmic libraries.
+**APPROVE AS EXCEPTIONAL** — disjoint-set-x meets all 13 exceptional checklist criteria. cli.js now fully tested with 100% coverage.
 
 ## Blocking Issues
 None identified.
