@@ -1,7 +1,7 @@
 # disjoint-set-x - Audit Status
 
 ## Last Audited
-2026-07-19
+2026-08-01 (re-verified; prior: 2026-07-19)
 
 ## Audit Summary
 **Status:** ✅ EXCEPTIONAL (13/13 criteria met)
@@ -20,8 +20,8 @@ node quickstart-test.mjs
 **Result:** ✅ Works correctly, all operations execute as expected
 
 ### ✅ 3. All tests GREEN
-**Test Count:** 51 tests (47 core + 4 CLI)
-**Pass Rate:** 100% (51/51)
+**Test Count:** 52 tests (47 core + 5 CLI — remote added 1 new CLI test)
+**Pass Rate:** 100% (52/52)
 **Result:** ✅ All tests pass
 
 ### ✅ 4. Test coverage >= 80% on core logic
